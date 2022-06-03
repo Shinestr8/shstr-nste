@@ -34,8 +34,8 @@ export function PredictionTable(props){
             return
         }
         setTextFilteredData(displayData.filter(function(line){
-            if(line.trueLabel !== undefined){
-                return (line.trueLabel.includes(textFilter.toLowerCase()));
+            if(line.trueLabel !== undefined && line.predictedLabel !== undefined){
+                return (line.trueLabel.includes(textFilter.toLowerCase()) || line.predictedLabel.includes(textFilter.toLowerCase()));
             }
             return 0
             
