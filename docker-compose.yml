@@ -10,7 +10,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - 443:443
+      - 80:80
       
   backend:
     image: onobot
