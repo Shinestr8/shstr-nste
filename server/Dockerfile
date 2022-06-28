@@ -1,4 +1,4 @@
-FROM node:16.15.0
+FROM node:16.15.0-slim
 
 RUN apt-get update
 RUN apt-get install python3-pip -y
@@ -13,7 +13,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install -g npm@8.13.1 & npm install
+RUN npm install
 
 COPY . .
 
