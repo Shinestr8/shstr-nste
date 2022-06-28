@@ -170,6 +170,7 @@ export function PredictionTable(props){
         setFilter(e.target.value)
     }
     
+
         return(
             <div 
                 style={{display:"flex", flexDirection: "column", alignItems: "center", width:"100%"}}
@@ -238,7 +239,9 @@ export function PredictionTable(props){
                     </div>
                 </>
             )}
-
+            {(!data || data.length === 0) && (
+                <div>No data to display</div>
+            )}
             
             {data && displayData && textFilter === '' &&  (
                 <div id="table-container" ref={ref}>
