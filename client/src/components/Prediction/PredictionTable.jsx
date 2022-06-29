@@ -192,7 +192,7 @@ export function PredictionTable(props){
             >
             
             
-            {!props.isPreview && stats && (
+            {!props.isPreview && stats && stats.total!==0 && (
                 <>
                     <OnoStats data={stats}/>
                     <div id="radio-group">
