@@ -37,11 +37,17 @@ export function Prediction(){
 
     useEffect(()=>{
         async function fetchLatestData(){
-            setLoading(true);
-            const response = await fetch(`/api/feedback/id/${id}`);
-            const result = await response.json();
-            setData(result);
-            setLoading(false);
+            try {
+                setLoading(true);
+                const response = await fetch(`/api/feedback/id/${id}`);
+                const result = await response.json();
+                setData(result);
+                setLoading(false);    
+            } catch (error) {
+                console.log("could not load data");
+                setLoading(false);
+            }
+            
         }
         fetchLatestData()
     }, [id])

@@ -23,14 +23,19 @@ export function ImprovementModalBody(props){
     }
 
     async function sendData(data){
-        fetch(`/api/feedback/id/${props.id}`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
+        try {
+            fetch(`/api/feedback/id/${props.id}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+        } catch (error) {
+            console.error("could not send feedback");
+        }
+        
     }
 
 

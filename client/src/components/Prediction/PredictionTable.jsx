@@ -68,48 +68,63 @@ export function PredictionTable(props){
     //fetch stats
     useEffect(()=>{
         async function loadStats(){
-            const response = await fetch('/api/feedback/stats');
-            const result = await response.json();
-            setStats(result);
+            try {
+                const response = await fetch('/api/feedback/stats');
+                const result = await response.json();
+                setStats(result);
+            } catch (error) {
+                console.log("Error loading stats");
+            }
         }
         loadStats();
+        
     }, [])
   
     //fetch data
     useEffect(()=>{
         async function fetchLatestData(){
-            setIsLoading(true);
-            const batchSize = 10;
-            const response = await fetch(`/api/feedback?page=0&batchSize=${batchSize}`);
-            const result = await response.json();
-            setData(result);
-            setIsLoading(false);
+            try {
+                setIsLoading(true);
+                const batchSize = 10;
+                const response = await fetch(`/api/feedback?page=0&batchSize=${batchSize}`);
+                const result = await response.json();
+                setData(result);
+                setIsLoading(false);     
+            } catch (error) {
+                console.log("Error loading data");
+            }
+            
         }  
 
         async function fetchBatchData(){
-            setIsLoading(true);
-            const batchSize=20;
-            const response = await fetch(`/api/feedback?page=${count}&batchSize=${batchSize}`);
-            const result = await response.json();
-            if(result.length < batchSize){
-            setIsDataRemaining(false);
+            try {
+                setIsLoading(true);
+                const batchSize=20;
+                const response = await fetch(`/api/feedback?page=${count}&batchSize=${batchSize}`);
+                const result = await response.json();
+                if(result.length < batchSize){
+                setIsDataRemaining(false);
+                }
+                if(count === 0){
+                setData(result);
+                setIsLoading(false);
+                }
+                else {
+                setData((data) => [...data, ...result]);
+                setIsLoading(false);
+                }
+                if(ref.current && ref.current.offsetHeight < height && result.length === batchSize){
+                    setCount(c => c +1);
+                }
+            } catch (error) {
+                console.log("Error loading data")
             }
-            if(count === 0){
-            setData(result);
-            setIsLoading(false);
-            }
-            else {
-            setData((data) => [...data, ...result]);
-            setIsLoading(false);
-            }
-            if(ref.current && ref.current.offsetHeight < height && result.length === batchSize){
-                setCount(c => c +1);
-            }
+            
         }
         if(!isPreview){
-            fetchBatchData()
+            fetchBatchData();    
         } else {
-            fetchLatestData()
+            fetchLatestData();
         }
     }, [count, height, isPreview])
 
@@ -240,10 +255,10 @@ export function PredictionTable(props){
                 </>
             )}
             {(!data || data.length === 0) && (
-                <div>No data to display</div>
+                <div className="error-message   ">Database is empty, process a song to fill it</div>
             )}
             
-            {data && displayData && textFilter === '' &&  (
+            {data && data.length !== 0  && displayData && textFilter === '' &&  (
                 <div id="table-container" ref={ref}>
                 <table id="prediction-table">
                     <thead>
